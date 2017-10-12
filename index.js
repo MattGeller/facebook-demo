@@ -7,6 +7,8 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 
+//proccess.env is for environment variables. Environment variables are like SUPER superglobals, for the whole machine!
+
 const PORT = process.env.PORT || 5000;
 
 require('./models/user');
