@@ -8,8 +8,9 @@ module.exports = (app) => {
     app.get('/auth/facebook', passport.authenticate('facebook'));
 
     app.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
-        console.log('At Callback');
-        res.send('You are logged in!');
+        // console.log('At Callback');
+        // res.send('You are logged in!');
+        res.redirect('/chat-lobby');
     });
 
     //logout route
