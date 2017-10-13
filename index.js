@@ -6,6 +6,7 @@ const passport = require('passport');
 //this is like creating the $_POST superglobal for node to use
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
+const io = require('socket.io')();
 
 //proccess.env is for environment variables. Environment variables are like SUPER superglobals, for the whole machine!
 
@@ -16,6 +17,9 @@ require('./services/passport');
 
 //express() essentially returns a web server for us to use
 const app = express();
+
+
+
 
 mongoose.connect(keys.mogo_db, /*this object literal should get rid of all those deprecation warnings*/ {
     useMongoClient: true
@@ -39,6 +43,23 @@ app.use(passport.session());
 
 //return a function, so we can directly invoke it
 require('./routes/auth_routes')(app);
+
+//get websocket ready and listening
+io.on('connection', socket =>{
+    console.log('A USER CONNECTED');
+
+    socket.on('disconnect',  () => {
+        console.log('A USER LEFT');
+    });
+
+    socket.on('chat message', msg => {
+        console.log('From Client Message:', msg);
+        io.emit('chat message', msg);
+    })
+
+});
+
+io.listen(3500);
 
 //tell the web server to start itself and listen in that particular place.
 app.listen(PORT, () => {

@@ -20,7 +20,6 @@ class App extends Component{
         <div>
             <div className="container">
                 <Nav/>
-                <h1>This will be our app</h1>
                 <Route exact path="/" component={Home}/>
                 <Route path="/chat-lobby" component={ChatLobby}/>
             </div>

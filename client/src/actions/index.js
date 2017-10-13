@@ -10,7 +10,11 @@ export function get_user() {
     //action will be the returned value of get_user()
     return (dispatch) => {
         axios.get('/api/current_user').then( resp => {
-            console.log('Server Resp:', resp);
+            // console.log('Server Resp:', resp);
+            dispatch({
+                type: types.GET_USER,
+                payload: resp.data
+            });
         });
     };
 }
