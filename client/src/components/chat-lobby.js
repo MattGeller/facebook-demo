@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 //for the socket chat to work on the client
 import io from 'socket.io-client';
+import {connect} from 'react-redux';
 
 class ChatLobby extends Component {
     constructor(props){
@@ -33,11 +34,13 @@ class ChatLobby extends Component {
 
     sendMsg(){
         console.log('Message:', this.state.msg);
+        const {display_name} = this.props.user;
 
-        this.socket.emit('chat message', this.state.msg);
+        this.socket.emit('chat message', display_name + ': ' + this.state.msg);
     }
 
     render(){
+        console.log('Chat lobby props:', this.props);
 
         const {msg, allMsgs} = this.state;
 
@@ -58,4 +61,10 @@ class ChatLobby extends Component {
     }
 }
 
-export default ChatLobby;
+function mapStateToProps(state){
+    return{
+        user: state.user.auth
+    }
+}
+
+export default connect(mapStateToProps)(ChatLobby);

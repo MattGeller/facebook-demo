@@ -67,12 +67,13 @@ passport.use(
             callbackURL: '/auth/facebook/callback'
         }, /*second argument is a callback function*/
         async (accessToken, refreshToken, profile, done) => {
+            console.log('FB profile object:',profile);
             const existingUser = await User.findOne({facebook_id: profile.id});
 
             if (existingUser) { //if it DID find an existing user
                 done(null, existingUser);
             } else { //if there is NOT an existing user, we need to create one
-                const newUser = await new User({facebook_id: profile.id}).save();
+                const newUser = await new User({facebook_id: profile.id, display_name: profile.displayName}).save();
                 done(null, newUser);
             }
 

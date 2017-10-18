@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
+const {resolve} = require('path');
 const passport = require('passport');
 //this is like creating the $_POST superglobal for node to use
 const bodyParser = require('body-parser');
@@ -60,6 +61,13 @@ io.on('connection', socket =>{
 });
 
 io.listen(3500);
+
+//these next two statements are to tell express to send static files, ie don't do processing on them or anything, just send them straight to the client
+app.use(express.static(resolve(__dirname, 'client', 'dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(resolve(__dirname, 'client', 'dist','index.html'))
+});
 
 //tell the web server to start itself and listen in that particular place.
 app.listen(PORT, () => {
